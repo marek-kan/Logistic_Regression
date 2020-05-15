@@ -50,5 +50,5 @@ for i in range(new_examples):
     online_acc.append(accuracy_score(y_te[i+1:], log.predict(x_te[i+1:, :])))
     
 plt.plot(range(len(online_acc)), online_acc)
-plt.title('MAE after online learning')
+plt.title('Accuracy after online learning')
 plt.show()
