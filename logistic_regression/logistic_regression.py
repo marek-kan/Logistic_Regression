@@ -26,5 +26,19 @@ class LogisticRegression():
         self.v[1:] = self.b*self.v[1:] + (1-self.b)*grad1
         self.w[0] = self.w[0] - self.lr*self.v[0]
         self.w[1:] = self.w[1:] * (1 - self.lr*self.reg_lambda/m) - self.lr*self.v[1:]
+    
+    def fit(self, x, y):
+        m = len(y)
+        x = np.array(x)
+        x = np.c_[np.ones(shape=(m, 1)), x]
+        y = np.array(y).reshape(m, 1)
+        
+        self.w = np.random.normal(size=(x.shape[1], 1))
+        self.v = np.zeros(shape=(x.shape[1], 1))
+        self.costs = []
+        for i in range(self.iter):
+            self.update(x, y, m)
+            self.costs.append(self.cost(x, y, m)[0])
+        return print(f'Final cost: {self.costs[-1]}')
         
         
