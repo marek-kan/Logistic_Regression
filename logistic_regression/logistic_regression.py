@@ -54,7 +54,7 @@ class LogisticRegression():
         for i in range(iterations):
             self.update(x, y, m)
             self.costs.append(self.cost(x, y, m)[0])
-        return print('Last cost was: {self.costs[-2]}; New cost: {self.costs[-1]}')
+        return print(f'Last cost was: {self.costs[-2]}; New cost: {self.costs[-1]}')
         
     def predict(self, x):
         x = np.array(x)
