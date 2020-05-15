@@ -41,6 +41,19 @@ class LogisticRegression():
             self.costs.append(self.cost(x, y, m)[0])
         return print(f'Final cost: {self.costs[-1]}')
     
+    def fit_sample(self, x, y, iterations=1):
+        try:
+            m = len(y)
+        except:
+            m = 1
+        x = np.array(x)
+        x = np.c_[np.ones(shape=(m, 1)), x]
+        y = np.array(y).reshape(m, 1)
+        for i in range(iterations):
+            self.update(x, y, m)
+            self.costs.append(self.cost(x, y, m)[0])
+        return print('Last cost was: {self.costs[-2]}; New cost: {self.costs[-1]}')
+        
     def predict(self, x):
         x = np.array(x)
         m = x.shape[0]
