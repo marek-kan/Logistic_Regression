@@ -11,4 +11,7 @@ class LogisticRegression():
     def h(z):
         return 1/(1 + np.exp(-z))
     
-    
+    def cost(self, x, y, m):
+        c = 1/m * (-y * np.log(self.h(self.w * x)) - (1-y)*np.log(1-self.h(self.w * x)))
+        regC = c + self.reg_lambda/(2*m) * np.dot(self.w.T, self.w**2)
+        return sum(regC)
