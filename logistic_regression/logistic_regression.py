@@ -8,4 +8,7 @@ class LogisticRegression():
         self.reg_lambda = reg_lambda
         self.b = beta
         
+    def h(z):
+        return 1/(1 + np.exp(-z))
+    
     
