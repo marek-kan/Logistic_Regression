@@ -2,25 +2,27 @@
 import numpy as np
 
 class LogisticRegression():
-    def __init__(self, max_iter=100, learning_rate=0.1, reg_lambda=0.5, beta=0.9):
+    def __init__(self, max_iter=100, learning_rate=0.1, reg_lambda=0.5, beta=0.9,
+                 return_proba=False):
         self.iter = max_iter
         self.lr = learning_rate
         self.reg_lambda = reg_lambda
         self.b = beta
+        self.return_proba = return_proba
         
-    def h(x, w):
-        z = np.dot(x, w)
+    def h(self, x):
+        z = np.dot(x, self.w)
         return 1/(1 + np.exp(-z))
     
     def cost(self, x, y, m):
-        c = 1/m * (-y * np.log(self.h(x, self.w)) - (1-y)*np.log(1-self.h(x, self.w)))
+        c = 1/m * (-y * np.log(self.h(x)) - (1-y)*np.log(1-self.h(x)))
         regC = c + self.reg_lambda/(2*m) * np.dot(self.w.T, self.w**2)
         return sum(regC)
     
     def update(self, x, y, m):
-        pred = self.h(x, self.w)
-        grad0 = 1/m * np.dot(self.w[:, 0].T, sum(pred-y))
-        grad1 = 1/m * np.dot(self.w[:, 1:].T, sum(pred-y))
+        pred = self.h(x)
+        grad0 = 1/m * np.dot(x[:, 0].T, (pred - y))
+        grad1 = 1/m * np.dot(x[:, 1:].T, (pred-y))
         
         self.v[0] = self.b*self.v[0] + (1-self.b)*grad0
         self.v[1:] = self.b*self.v[1:] + (1-self.b)*grad1
@@ -58,6 +60,9 @@ class LogisticRegression():
         x = np.array(x)
         m = x.shape[0]
         x = np.c_[np.ones(shape=(m, 1)), x]
-        return self.h(x, self.w)
+        if not self.return_proba:
+            return np.round(self.h(x))
+        else:
+            return self.h(x)
         
         
