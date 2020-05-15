@@ -40,5 +40,11 @@ class LogisticRegression():
             self.update(x, y, m)
             self.costs.append(self.cost(x, y, m)[0])
         return print(f'Final cost: {self.costs[-1]}')
+    
+    def predict(self, x):
+        x = np.array(x)
+        m = x.shape[0]
+        x = np.c_[np.ones(shape=(m, 1)), x]
+        return self.h(x, self.w)
         
         
