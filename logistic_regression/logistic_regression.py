@@ -149,13 +149,6 @@ class OneVsAll(LogisticRegression):
 
 
 
-"""
-potrebujem pre kazdu classu inicializovat vlastne w a v ktore na konci loop 
-vlozim do self.w/v
-"""
-
-
-
 
 
 
