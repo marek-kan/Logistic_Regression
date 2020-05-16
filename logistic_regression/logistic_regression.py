@@ -118,7 +118,7 @@ class OneVsAll(LogisticRegression):
         for clss in self.classes_:
             predictions[:, clss] = self.h(x, self.w[:, clss])
         if not self.return_proba:
-            return [predictions[i, np.argmax(x)] for i, x in enumerate(predictions)]
+            return [np.argmax(x) for x in predictions]
         else:
             return predictions
 
