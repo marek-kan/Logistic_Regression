@@ -96,7 +96,7 @@ class OneVsAll(LogisticRegression):
         
         self.w = np.random.normal(size=(x.shape[1], len(self.classes_)))
         self.v = np.zeros(shape=(x.shape[1], len(self.classes_)))
-        self.costs = []
+        self.costs = np.zeros(shape=(len(self.classes_), self.iter))
         
         for clss in self.classes_:
             y_tmp = np.where(y == clss, 1, 0)
@@ -106,10 +106,12 @@ class OneVsAll(LogisticRegression):
             for i in range(self.iter):
                 v, w = self.update(x, y_tmp, m, v, w)
                 class_cost.append(self.cost(x, y_tmp, m, w)[0])
-            self.costs.append(tuple(class_cost))
+            self.costs[clss, :] = class_cost
             self.w[:, clss] = w.reshape(x.shape[1])
             self.v[:, clss] = v.reshape(x.shape[1])
-            
+        self.cost_function = self.costs.mean(axis=0)
+        return print(f'final cost: {self.cost_function[-1]}')
+    
     def fit_sample(self, x, y, iterations=1):
         try:
             m = len(y)
@@ -126,8 +128,8 @@ class OneVsAll(LogisticRegression):
             w = self.w[:, clss].reshape(x.shape[1], 1)
             for i in range(self.iter):
                 v, w = self.update(x, y_tmp, m, v, w)
-                class_cost.append(self.cost(x, y_tmp, m, w)[0])
-            self.costs.append(tuple(class_cost))
+#                class_cost.append(self.cost(x, y_tmp, m, w)[0])
+#            self.costs.append(tuple(class_cost))
             self.w[:, clss] = w.reshape(x.shape[1])
             self.v[:, clss] = v.reshape(x.shape[1])
             
