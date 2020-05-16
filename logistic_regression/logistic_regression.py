@@ -110,6 +110,27 @@ class OneVsAll(LogisticRegression):
             self.w[:, clss] = w.reshape(x.shape[1])
             self.v[:, clss] = v.reshape(x.shape[1])
             
+    def fit_sample(self, x, y, iterations=1):
+        try:
+            m = len(y)
+        except:
+            m = 1
+        x = np.array(x)
+        x = np.c_[np.ones(shape=(m, 1)), x]
+        y = np.array(y).reshape(m, 1)
+        
+        for clss in self.classes_:
+            y_tmp = np.where(y == clss, 1, 0)
+            class_cost = []
+            v = self.v[:, clss].reshape(x.shape[1], 1)
+            w = self.w[:, clss].reshape(x.shape[1], 1)
+            for i in range(self.iter):
+                v, w = self.update(x, y_tmp, m, v, w)
+                class_cost.append(self.cost(x, y_tmp, m, w)[0])
+            self.costs.append(tuple(class_cost))
+            self.w[:, clss] = w.reshape(x.shape[1])
+            self.v[:, clss] = v.reshape(x.shape[1])
+            
     def predict(self, x):
         x = np.array(x)
         m = x.shape[0]
