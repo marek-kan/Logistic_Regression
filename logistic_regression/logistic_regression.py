@@ -107,15 +107,15 @@ class OneVsAll(LogisticRegression):
                 v, w = self.update(x, y_tmp, m, v, w)
                 class_cost.append(self.cost(x, y_tmp, m, w)[0])
             self.costs.append(tuple(class_cost))
-            self.w[:, clss] = w
-            self.v[:, clss] = v
+            self.w[:, clss] = w.reshape(x.shape[1])
+            self.v[:, clss] = v.reshape(x.shape[1])
             
     def predict(self, x):
         x = np.array(x)
         m = x.shape[0]
         x = np.c_[np.ones(shape=(m, 1)), x]
         predictions = np.zeros(shape=(m, len(self.classes_)))
-        for clss in self.n_classes:
+        for clss in self.classes_:
             predictions[:, clss] = self.h(x, self.w[:, clss])
         if not self.return_proba:
             return [predictions[i, np.argmax(x)] for i, x in enumerate(predictions)]
