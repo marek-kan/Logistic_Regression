@@ -120,7 +120,6 @@ class OneVsAll(LogisticRegression):
         x = np.array(x)
         x = np.c_[np.ones(shape=(m, 1)), x]
         y = np.array(y).reshape(m, 1)
-        
         for clss in self.classes_:
             y_tmp = np.where(y == clss, 1, 0)
             class_cost = []
@@ -128,8 +127,7 @@ class OneVsAll(LogisticRegression):
             w = self.w[:, clss].reshape(x.shape[1], 1)
             for i in range(self.iter):
                 v, w = self.update(x, y_tmp, m, v, w)
-#                class_cost.append(self.cost(x, y_tmp, m, w)[0])
-#            self.costs.append(tuple(class_cost))
+                class_cost.append(self.cost(x, y_tmp, m, w)[0])
             self.w[:, clss] = w.reshape(x.shape[1])
             self.v[:, clss] = v.reshape(x.shape[1])
             
